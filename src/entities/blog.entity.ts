@@ -1,23 +1,23 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Blog {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-@PrimaryGeneratedColumn()
-id: number;
+  @Column()
+  title: string;
 
-@Column()
-title: string;
+  @Column()
+  description: string;
 
-@Column()
-description: string;
+  @Column({nullable: true})
+  photo: string;
 
-@Column()
-isActive: boolean;
+  @Column()
+  isActive: boolean;
 
-@Column()
-createdDate: Date;
+  // @Column()
+  // createdDate: Date;
 
-@Column()
-photos: string;
 }

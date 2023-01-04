@@ -1,5 +1,6 @@
 export class BlogDto {
-     title: string;
-     description: string;
-     isActive: boolean;
+  title: string;
+  description: string;
+  isActive: boolean;
+  photo?: string;
 }

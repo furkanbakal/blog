@@ -1,9 +1,11 @@
-import { UpdateResult } from "typeorm";
+import { UpdateResult } from 'typeorm';
 
-export interface BaseController <T> {
-    create(data: object): Promise<T>;
-    getAll(): Promise<T[]>;
-    update(id: number, data: object): Promise<UpdateResult>;
-    delete(id: number);
-    getById(id: number): Promise<T>;
+export interface IParameters{ data?: any, file?: any, query?: any, parameter?: any, req?: any, res?: any }
+
+export interface BaseController<T> {
+  create(...IParameters): Promise<T>;
+  getAll(...IParameters): Promise<T[]>;
+  update(...IParameters): Promise<UpdateResult>;
+  delete(...IParameters);
+  getById(...IParameters): Promise<T>;
 }

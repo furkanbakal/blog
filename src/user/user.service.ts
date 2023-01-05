@@ -33,20 +33,16 @@ export class UserService {
     return this.userRepository.findOneBy({id: id});
   }
 
+  findByEmail(email: string) {
+    return this.userRepository.findOneBy({email: email});
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    return await this.userRepository.delete({id: id});
   }
 
-  async login(data: {email: string, password: string}) {
-      const user = await this.userRepository.findOneBy({email: data.email});
-      if(!user) {
-        return;
-      }
-      
-      return await bcrypt.compare(data.password, user.password);
-  }
 }

@@ -10,6 +10,10 @@ import { ConfigModule } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { env } from 'process';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import RolesGuard from './auth/guards/roles.guard';
+
 
 @Module({
   imports: [
@@ -38,8 +42,15 @@ import { UserModule } from './user/user.module';
     HttpModule,
     BlogModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+    ],
 })
 export class AppModule {}

@@ -32,9 +32,9 @@ export class UserController {
     return this.userService.remove(+id);
   }
 
-  @Post('login') 
-  login(@Body() data: {email: string, password: string}) {
-    return this.userService.login(data);
-  }
+  // @Post('login') 
+  // login(@Body() data: {email: string, password: string}) {
+  //   return this.userService.login(data);
+  // }
   
 }

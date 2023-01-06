@@ -20,10 +20,10 @@ export default class RolesGuard implements CanActivate {
       const request: Request = context.switchToHttp().getRequest();
       const tokenData = (await this.jwtService
         .decode(request.headers.authorization?.split('Bearer')[1].trim() as string) as JwtDecodeResponse | null);
-        console.log(tokenData)
+        
       if (tokenData?.role === Role.Admin) {
         return true;
       }
       return !tokenData ? false : roles.includes(tokenData?.role);
-    }
+     }
   }

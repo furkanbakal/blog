@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
 
 @Controller('users')
 export class UserController {
@@ -17,6 +19,7 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Roles(Role.Admin)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);

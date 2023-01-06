@@ -1,6 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BlogModule } from './blog/blog.module';
@@ -28,8 +27,8 @@ import RolesGuard from './auth/guards/roles.guard';
     TypeOrmModule.forRoot({
       type: 'mssql',
       host: 'FURKAN\\SQLEXPRESS',
-      username: 'sa',
-      password: '1',
+      username: env.DB_USERNAME,
+      password: env.DB_PASSWORD,
       database: env.DB_NAME,
 
       entities: [Blog],

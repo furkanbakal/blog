@@ -25,8 +25,10 @@ export class AppController {
 }
 
   @Roles(Role.Admin)
+  // @UseGuards(JwtAuthGuard)
   @Get('test')
   async test(@Request() req) {
+    console.log(req.user)
     return req.user;
   }
 }

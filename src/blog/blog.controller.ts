@@ -9,6 +9,8 @@ import { BlogDto } from './dto/blog.dto';
 import { v4 as uuid } from 'uuid';
 import { extname } from 'path';
 import { equal } from 'assert';
+import { Role } from '../enums/role.enum';
+import { Roles } from '../decorators/roles.decorator';
 
 const storage = { 
     storage: diskStorage({
@@ -31,6 +33,7 @@ export class BlogController{
         return this.blogService.getById(id);
     }
 
+    @Roles(Role.Admin)
     @Post()
     @UseInterceptors(FileInterceptor('image',storage
     ))
@@ -54,7 +57,7 @@ export class BlogController{
         return this.blogService.getAll();
     }
 
-
+    @Roles(Role.Admin)
     @Put(':id')
     @UseInterceptors(FileInterceptor('image', storage))
     update(@Param('id') id: number,
@@ -72,6 +75,7 @@ export class BlogController{
         return this.blogService.update(id, data);    
     }
 
+    @Roles(Role.Admin)
     @Delete(':id')
     delete(@Param('id') id: number) {
         return this.blogService.delete(id);

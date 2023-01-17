@@ -12,6 +12,8 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import RolesGuard from './auth/guards/roles.guard';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 
 @Module({
@@ -19,6 +21,10 @@ import RolesGuard from './auth/guards/roles.guard';
     MulterModule.register({
       dest: '../images',
     }),
+
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'images'),
+    // }),
 
     ConfigModule.forRoot({
       isGlobal: true,

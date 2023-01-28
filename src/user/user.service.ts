@@ -37,8 +37,12 @@ export class UserService {
     return this.userRepository.findOneBy({email: email});
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.update(id, updateUserDto);
+  }
+
+  async updateRefreshToken(id: number, refreshToken: string | null) {
+    return await this.userRepository.update(id, {refreshToken: refreshToken})
   }
 
   async remove(id: number) {

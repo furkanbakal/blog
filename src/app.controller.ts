@@ -24,11 +24,9 @@ export class AppController {
     return this.authService.login(req.user);
 }
 
-  @Roles(Role.Admin)
-  // @UseGuards(JwtAuthGuard)
-  @Get('test')
+  @UseGuards(JwtAuthGuard)
+  @Get('logout')
   async test(@Request() req) {
-    console.log(req.user)
-    return req.user;
+    return this.authService.logout(req.user['sub']);
   }
 }

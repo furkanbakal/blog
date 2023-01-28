@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { User } from '../user/entities/user.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
     constructor(
         private userService: UserService,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        private configService: ConfigService,
         ) {}
 
     async validateUser(email: string, pass: string): Promise<any> {
@@ -27,10 +28,48 @@ export class AuthService {
         return null;
       }
 
-      async login(user: any) {
-        const payload = { email: user.email, sub: user.id, role: user.role  };
+      async login(data: any) {
+        const payload = { email: data.email, sub: data.id, role: data.role  };
+        const tokens = await this.getTokens(payload);
+        await this.updateRefreshToken(data.id, tokens.refreshToken);
+        
+        return tokens;
+      }
+
+      async logout(userId: number) {
+        return this.userService.updateRefreshToken(userId, null);
+      }
+
+
+
+      async getTokens(payload) {
+        const [accessToken, refreshToken] = await Promise.all([
+          this.jwtService.signAsync(
+            payload,
+            {
+              secret: this.configService.get<string>('SECRET_KEY'),
+              expiresIn: '60s',
+            },
+          ),
+          this.jwtService.signAsync(
+            payload,
+            {
+              secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+              expiresIn: '1h',
+            },
+          ),
+        ]);
+    
         return {
-            access_token: this.jwtService.sign(payload, {secret: process.env.SECRET_KEY})
-        }
+          accessToken,
+          refreshToken,
+        };
+      }
+
+      async updateRefreshToken(userId: number, refreshToken: string) {
+        const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+        await this.userService.updateRefreshToken(userId, hashedRefreshToken);
       }
 }
+
+

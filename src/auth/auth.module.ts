@@ -7,8 +7,10 @@ import { User } from '../user/entities/user.entity';
 import { UserModule } from '../user/user.module';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
+import { AccessTokenStrategy } from './strategies/accessToken.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
+import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
 
 @Module({
   imports: [
@@ -17,7 +19,7 @@ import { LocalStrategy } from './strategies/local.strategy';
     PassportModule,
     JwtModule.register({
       secret: 'secretKey',
-      signOptions: {expiresIn: '1d'}
+      signOptions: {expiresIn: 15}
     })
   ], 
 
@@ -25,7 +27,9 @@ import { LocalStrategy } from './strategies/local.strategy';
     AuthService,
     LocalStrategy,
     JwtService,
-    JwtStrategy  
+    JwtStrategy,
+    AccessTokenStrategy,
+    RefreshTokenStrategy  
   ],
   exports: [AuthService ,JwtService]
 })
